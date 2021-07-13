@@ -13,6 +13,7 @@ import {
   useBalance,
   useContractLoader,
   useContractReader,
+  useDynamicEventListener,
   useEventListener,
   useExchangePrice,
   useGasPrice,
@@ -126,6 +127,7 @@ function App(props) {
 
   const [injectedProvider, setInjectedProvider] = useState();
   const [address, setAddress] = useState();
+  const [molochAddress, setMolochAddress] = useState();
   /* 💵 This hook will get the price of ETH from 🦄 Uniswap: */
   const price = useExchangePrice(targetNetwork, mainnetProvider);
 
@@ -191,6 +193,8 @@ function App(props) {
   const setPurposeEvents = useEventListener(readContracts, "YourContract", "SetPurpose", localProvider, 1);
 
   const setMolochSummonerEvents = useEventListener(readContracts, "MolochSummoner", "SummonComplete", localProvider, 1);
+
+  const setMolochProposalEvents = useDynamicEventListener(readContracts, "Moloch", molochAddress, "SubmitProposal", localProvider, 1);
 
   /*
   const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
@@ -503,6 +507,9 @@ function App(props) {
               tx={tx}
               writeContracts={writeContracts}
               readContracts={readContracts}
+              setMolochProposalEvents={setMolochProposalEvents}
+              setMolochAddress={setMolochAddress}
+              molochAddress={molochAddress}
             />
           </Route>
           <Route path="/mainnetdai">
