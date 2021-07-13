@@ -20,7 +20,7 @@ import {
   useUserSigner,
 } from "./hooks";
 // import Hints from "./Hints";
-import { ExampleUI, Hints, Subgraph } from "./views";
+import { ExampleUI, Hints, Subgraph, MolochSummoner, Moloch } from "./views";
 
 const { ethers } = require("ethers");
 /*
@@ -189,6 +189,8 @@ function App(props) {
 
   // 📟 Listen for broadcast events
   const setPurposeEvents = useEventListener(readContracts, "YourContract", "SetPurpose", localProvider, 1);
+
+  const setMolochSummonerEvents = useEventListener(readContracts, "MolochSummoner", "SummonComplete", localProvider, 1);
 
   /*
   const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
@@ -399,6 +401,26 @@ function App(props) {
               ExampleUI
             </Link>
           </Menu.Item>
+          <Menu.Item key="/molochSummoner">
+            <Link
+              onClick={() => {
+                setRoute("/molochSummoner");
+              }}
+              to="/molochSummoner"
+            >
+              Moloch Summoner
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/moloch">
+            <Link
+              onClick={() => {
+                setRoute("/moloch");
+              }}
+              to="/moloch"
+            >
+              Moloch
+            </Link>
+          </Menu.Item>
           <Menu.Item key="/mainnetdai">
             <Link
               onClick={() => {
@@ -458,6 +480,29 @@ function App(props) {
               readContracts={readContracts}
               purpose={purpose}
               setPurposeEvents={setPurposeEvents}
+            />
+          </Route>
+          <Route path="/molochSummoner">
+            <MolochSummoner
+              address={address}
+              userSigner={userSigner}
+              mainnetProvider={mainnetProvider}
+              localProvider={localProvider}
+              yourLocalBalance={yourLocalBalance}
+              price={price}
+              tx={tx}
+              writeContracts={writeContracts}
+              readContracts={readContracts}
+              purpose={purpose}
+              setMolochSummonerEvents={setMolochSummonerEvents}
+            />
+          </Route>
+          <Route path="/moloch">
+            <Moloch
+              mainnetProvider={mainnetProvider}
+              tx={tx}
+              writeContracts={writeContracts}
+              readContracts={readContracts}
             />
           </Route>
           <Route path="/mainnetdai">
