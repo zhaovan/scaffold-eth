@@ -3,7 +3,6 @@ pragma experimental ABIEncoderV2;
 //SPDX-License-Identifier: GPL
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/presets/ERC20PresetMinterPauser.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -12,7 +11,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20Snapshot.sol";
 
 /**
  * @title TokenRecover
- * @dev Allow to recover any ERC20 sent into the contract for error
+ * @dev Allow to recover any ERC20 sent into the contract on error
  */
 contract TokenRecover is Ownable {
 
@@ -30,7 +29,7 @@ contract TokenRecover is Ownable {
 /// @author codenamejason
 /// @notice Simple token with locking functionality
 /// @dev 
-contract YourToken is ERC20PresetMinterPauser, TokenRecover {
+contract YourToken is TokenRecover, ERC20Snapshot {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
@@ -45,11 +44,8 @@ contract YourToken is ERC20PresetMinterPauser, TokenRecover {
     uint256 public immutable cap = 1000000000 * 10 ** 18; // One Billion Tokens...
 
     // todo: Some preset times to set in seconds 
-    uint256 private constant _TIMELOCK_YEAR = 1; // needs to be 1 year in seconds
-    uint256 private constant _TIMELOCK_6MONTHS = 6; // needs to be 6 months in seconds
-
-    bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
-    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
+    uint256 internal constant _TIMELOCK_YEAR = 1; // needs to be 1 year in seconds
+    uint256 internal constant _TIMELOCK_6MONTHS = 6; // needs to be 6 months in seconds
 
     mapping(address => uint256) private balances;
 
@@ -65,23 +61,65 @@ contract YourToken is ERC20PresetMinterPauser, TokenRecover {
 
     constructor()
         public
-        ERC20PresetMinterPauser("Your Token", "YRTKN")
+        ERC20("Your Token", "YRTKN")
     {
-        // Set up Roles
-        _setupRole(DEFAULT_ADMIN_ROLE, 0x3f15B8c6F9939879Cb030D6dd935348E57109637);
-        _setupRole(MINTER_ROLE, 0x3f15B8c6F9939879Cb030D6dd935348E57109637);
-        _setupRole(BURNER_ROLE, 0x3f15B8c6F9939879Cb030D6dd935348E57109637);
-
         // Mint some tokens... test....
-        mint(0x3f15B8c6F9939879Cb030D6dd935348E57109637, 100000 ether);
+        _mint(0x3f15B8c6F9939879Cb030D6dd935348E57109637, 100000 ether);
         transferOwnership(0x3f15B8c6F9939879Cb030D6dd935348E57109637);
     }
 
+    /** Mint & Burn Functions */
     /// @notice Creates `_amount` token to `_to`. Must only be called by the owner
     function mintTokens(address _to, uint256 _amount) public onlyOwner {
         _mint(_to, _amount);
 
         emit MintFinished();
+    }
+
+    /**
+     * @dev Mints `amount` tokens from the caller.
+     *
+     * See {ERC20-_mint}.
+     */
+    function mint(uint256 amount) public virtual {
+        _mint(_msgSender(), amount);
+
+        emit MintFinished();
+    }
+
+    /**
+     * @dev Destroys `amount` tokens from the caller.
+     *
+     * See {ERC20-_burn}.
+     */
+    function burn(uint256 _amount)
+        public
+        virtual
+    {
+        _burn(_msgSender(), _amount);
+
+        emit BurnFinished();
+    }
+   
+    /**
+     * @dev Destroys `amount` tokens from `account`, deducting from the caller's
+     * allowance.
+     *
+     * See {ERC20-_burn} and {ERC20-allowance}.
+     *
+     * Requirements:
+     *
+     * - the caller must have allowance for ``accounts``'s tokens of at least
+     * `amount`.
+     */
+    function burnFrom(address account, uint256 amount)  
+        public
+        virtual 
+    {
+        uint256 decreasedAllowance = allowance(account, _msgSender()).sub(amount, "YourToken:: burn amount exceeds allowance");
+
+        _approve(account, _msgSender(), decreasedAllowance);
+        _burn(account, amount);
     }
 
     /**
@@ -337,98 +375,5 @@ contract YourToken is ERC20PresetMinterPauser, TokenRecover {
         for (uint256 i = 0; i < lockReason[_of].length; i++) {
             unlockableTokens = unlockableTokens.add(tokensUnlockable(_of, lockReason[_of][i]));
         }  
-    }
-
-    /**
-     * @dev Destroys `amount` tokens from the caller.
-     *
-     * See {ERC20-_burn}.
-     */
-    function burn(uint256 _amount)
-        public
-        virtual
-        override
-    {
-        require(hasRole(BURNER_ROLE, msg.sender), "YourToken:: Must be in a Burner role");
-        _burn(_msgSender(), _amount);
-
-        emit BurnFinished();
-    }
-
-    /**
-     * @dev Mints `amount` tokens from the caller.
-     *
-     * See {ERC20-_mint}.
-     */
-    function mint(uint256 amount) public virtual {
-        _mint(_msgSender(), amount);
-
-        emit MintFinished();
-    }
-
-    /**
-     * @dev Function to add new minters
-     * @param account The account that will be assigned MINTER_ROLE
-     */
-    function addMinter(address account) 
-        public 
-        onlyOwner 
-    {
-        grantRole(MINTER_ROLE, account);
-    }
-     
-    /**
-     * @dev Function to add new burners
-     * @param account The account that will be assigned BURNER_ROLE
-     */
-    function addBurner(address account) 
-        public
-        onlyOwner
-    {
-        grantRole(MINTER_ROLE, account);
-    }
-
-    /**
-     * @dev Function to remove minters
-     * @param account The account from which MINTER_ROLE is to be revoked
-     */
-    function removeMinter(address account)
-        public
-        onlyOwner
-    {
-        revokeRole(MINTER_ROLE, account);
-    }
-
-    /**
-     * @dev Function to remove burners
-     * @param account The account from which BURNER_ROLE is to be revoked
-     */
-    function removeBurner(address account)
-        public
-        onlyOwner
-    {
-        revokeRole(BURNER_ROLE, account);
-    }
-
-    /**
-     * @dev Destroys `amount` tokens from `account`, deducting from the caller's
-     * allowance.
-     *
-     * See {ERC20-_burn} and {ERC20-allowance}.
-     *
-     * Requirements:
-     *
-     * - the caller must have allowance for ``accounts``'s tokens of at least
-     * `amount`.
-     */
-    function burnFrom(address account, uint256 amount)  
-        public
-        virtual
-        override 
-    {
-        uint256 decreasedAllowance = allowance(account, _msgSender()).sub(amount, "YourToken:: burn amount exceeds allowance");
-
-        _approve(account, _msgSender(), decreasedAllowance);
-        _burn(account, amount);
     }
 }
