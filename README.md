@@ -2,6 +2,8 @@
 
 > A simple app to release funds from a GRT vesting contract
 
+[Live app](https://grt-releaser.surge.sh/)
+
 ** This is experimental software, use at your own risk **
 
 - enter your GRT token vesting address
