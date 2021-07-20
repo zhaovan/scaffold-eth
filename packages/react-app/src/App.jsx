@@ -219,8 +219,10 @@ function App(props) {
   useEffect(() => {
     if (data && data.tokenLockWallet) {
       setBeneficiary(data.tokenLockWallet.beneficiary);
+    } else if (data && !data.tokenLockWallet) {
+      setBeneficiary("No contract found");
     }
-  }, [data && data.tokenLockWallet.id]);
+  }, [data && data.tokenLockWallet]);
 
   // If you want to call a function on a new block
   useOnBlock(mainnetProvider, () => {
@@ -372,7 +374,7 @@ function App(props) {
               />
             </Row>
             {selectedContract &&
-              (beneficiary ? (
+              (beneficiary && beneficiary !== "No contract found" ? (
                 <>
                   <Divider />
                   <Space direction="vertical">
@@ -391,6 +393,7 @@ function App(props) {
                           title="Total"
                           value={
                             data &&
+                            data.tokenLockWallet &&
                             data.tokenLockWallet.managedAmount &&
                             parseFloat(ethers.utils.formatEther(data.tokenLockWallet.managedAmount)).toFixed(2)
                           }
@@ -403,6 +406,7 @@ function App(props) {
                           title="Released"
                           value={
                             data &&
+                            data.tokenLockWallet &&
                             data.tokenLockWallet.tokensReleased &&
                             parseFloat(ethers.utils.formatEther(data.tokenLockWallet.tokensReleased)).toFixed(2)
                           }
@@ -457,6 +461,8 @@ function App(props) {
                     </Row>
                   </Space>
                 </>
+              ) : beneficiary === "No contract found" ? (
+                <Badge status="error" text="No contract found" />
               ) : (
                 <>
                   <Divider />
