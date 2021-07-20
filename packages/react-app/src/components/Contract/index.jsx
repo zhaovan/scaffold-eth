@@ -54,8 +54,9 @@ export default function Contract({
   price,
   blockExplorer,
   chainId,
+  customAddresses,
 }) {
-  const contracts = useContractLoader(provider, { chainId });
+  const contracts = useContractLoader(provider, { chainId, customAddresses });
   let contract;
   if (!customContract) {
     contract = contracts ? contracts[name] : "";

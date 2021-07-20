@@ -2,6 +2,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import React from "react";
 import { ThemeSwitcherProvider } from "react-css-theme-switcher";
 import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 
@@ -12,7 +13,7 @@ const themes = {
 
 const prevTheme = window.localStorage.getItem("theme");
 
-const subgraphUri = "http://localhost:8000/subgraphs/name/scaffold-eth/your-contract";
+const subgraphUri = "https://api.thegraph.com/subgraphs/name/graphprotocol/token-distribution";
 
 const client = new ApolloClient({
   uri: subgraphUri,
@@ -22,7 +23,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <ThemeSwitcherProvider themeMap={themes} defaultTheme={prevTheme || "light"}>
-      <App subgraphUri={subgraphUri} />
+      <BrowserRouter>
+        <App subgraphUri={subgraphUri} />
+      </BrowserRouter>
     </ThemeSwitcherProvider>
   </ApolloProvider>,
   document.getElementById("root"),
