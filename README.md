@@ -62,16 +62,18 @@ yarn deploy
 ### GTC Contract Interaction
 A in-house built easy to use UI component allowing to easily interact with the [GTC Contract](https://etherscan.io/address/0xde30da39c46104798bb5aa3fe8b9e0e1f348163f)
 
-![contract](https://user-images.githubusercontent.com/57724812/126625432-0cbd8582-caa3-4a0b-a58a-e420d0935b62.png)
+<img width="1518" alt="gtc" src="https://user-images.githubusercontent.com/26670962/127009268-ddebfb76-754f-41c8-8a2d-67a928cc30a8.png">
 
 Connect your wallet make sure you are on mainnet and interact!
+
 
 ### Delegator Access
 See the list of delegators for a particular delegatee
 
-![list](https://user-images.githubusercontent.com/57724812/126625584-39cf3de0-92f7-4465-914a-79931bf6edef.png)
+<img width="1514" alt="list" src="https://user-images.githubusercontent.com/26670962/127009398-3253c519-5d64-40fb-9218-75abbc888b77.png">
 
 Enter the delegatee address and see the list of delegators!
+
 
 ### Gnosis Multi-Sig Interaction (WIP)
 Allow the DAO members to easily setup a multi-sig wallet with a custom UI and backend
