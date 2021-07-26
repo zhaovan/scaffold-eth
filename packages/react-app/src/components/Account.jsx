@@ -41,7 +41,7 @@ import Wallet from "./Wallet";
 
 export default function Account({
   address,
-  userSigner,
+  userProvider,
   localProvider,
   mainnetProvider,
   price,
@@ -95,8 +95,7 @@ export default function Account({
       <Balance address={address} provider={localProvider} price={price} />
       <Wallet
         address={address}
-        provider={localProvider}
-        signer={userSigner}
+        provider={userProvider}
         ensProvider={mainnetProvider}
         price={price}
         color={currentTheme === "light" ? "#1890ff" : "#2caad9"}
