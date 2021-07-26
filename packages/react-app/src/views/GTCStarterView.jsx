@@ -30,7 +30,7 @@ export default function GTCStarterView({
         ⚙️ Here is an example UI that displays and sets the purpose in your smart contract:
       */}
       <div style={{ border: "1px solid #cccccc", padding: 16, width: 400, margin: "auto", marginTop: 64 }}>
-        <h2>GTC Starter Kit</h2>
+        <h2>GTC Delegators</h2>
         <Divider />
         <div style={{ margin: 8 }}>
           <Input placeholder = "Enter Delgatee Address"
@@ -42,8 +42,10 @@ export default function GTCStarterView({
                 }
               }`;
               const result = await request(endpoint, DELEGATOR_QUERY);
-              const delegatee = result.delegate.delegators;
-              setDelegate(delegatee)
+              if (result && result.delegate && result.delegate.delegators) {
+                const delegatee = result.delegate.delegators;
+                setDelegate(delegatee)
+              }
             }}
           />
         </div>
