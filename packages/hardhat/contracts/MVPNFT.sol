@@ -117,8 +117,13 @@ contract MVPNFT is ERC721, ERC165 {
 
     function setApprovalForAll(address _operator, bool _approved) external override {
         require(msg.sender == owner, "Msg.sender not owner!");
-        emit ApprovalForAll(owner, _operator, _approved);
-        approvedList[tokenId] == _approved;
+        if (_approved) {
+            emit ApprovalForAll(owner, _operator, _approved);
+            approvedList[tokenId] == _operator;
+        } else {
+            emit ApprovalForAll(owner, address(0), _approved);
+            approvedList[tokenId] = address(0);
+        }
     }
 
     function getApproved(uint _tokenId) external view override returns (address) {
