@@ -33,31 +33,24 @@ export default function GTCStarterView({
         <h2>GTC Starter Kit</h2>
         <Divider />
         <div style={{ margin: 8 }}>
-          <Input
-            onChange={e => {
+          <Input placeholder = "Enter Delgatee Address"
+            onChange={async (e) => {
               setDelegatorAddress(e.target.value)
-            }}
-          />
-          <Button
-            style={{ marginTop: 8 }}
-            onClick={async () => {
               const DELEGATOR_QUERY = `{
-                delegate(id: "${delegatorAddress}") {
+                delegate(id: "${e.target.value}") {
                   delegators
                 }
               }`;
               const result = await request(endpoint, DELEGATOR_QUERY);
               const delegatee = result.delegate.delegators;
-              setDelegate(delegatee);
+              setDelegate(delegatee)
             }}
-          >
-            Get Delegators
-          </Button>
+          />
         </div>
       </div>
       <div style={{ textAlign: "left", maxWidth: 800, margin: "0 auto" }}>
         <h2 style={{ marginTop: "20px", marginBottom: "10px" }}>Delegators</h2>
-        {delegate.length === 0 && <p>Fetching delegates..</p>}
+        {delegate.length === 0 && <p>Fetching delegators..</p>}
         {delegate.map(member => {
           return (
             <div style={{ marginTop: "10px" }}>

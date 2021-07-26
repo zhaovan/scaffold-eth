@@ -326,7 +326,7 @@ function App(props) {
               }}
               to="/"
             >
-              YourContract
+              GTC Contract
             </Link>
           </Menu.Item>
           <Menu.Item key="/hints">
@@ -336,7 +336,7 @@ function App(props) {
               }}
               to="/hints"
             >
-              Hints
+              Scaffold Hints
             </Link>
           </Menu.Item>
           <Menu.Item key="/gtc-starter">
@@ -346,10 +346,10 @@ function App(props) {
               }}
               to="/gtc-starter"
             >
-              GTC Starter Kit
+              GTC Delgation Dashboard
             </Link>
           </Menu.Item>
-          <Menu.Item key="/mainnetdai">
+          {/* <Menu.Item key="/mainnetdai">
             <Link
               onClick={() => {
                 setRoute("/mainnetdai");
@@ -368,7 +368,7 @@ function App(props) {
             >
               Subgraph
             </Link>
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu>
 
         <Switch>
