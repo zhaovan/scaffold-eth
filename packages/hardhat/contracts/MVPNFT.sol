@@ -68,6 +68,7 @@ contract MVPNFT is ERC721, ERC165 {
         require(_from == owner && _from != address(0) && _tokenId == tokenId);
         if(isContract(_to)) {
             emit Transfer(_from, _to, _tokenId);
+            approved = address(0);
             owner = _to;
             if(ERC721TokenReceiver(_to).onERC721Received(msg.sender, _from, _tokenId, data) != 0x150b7a02) {
                 revert("receiving address unable to hold ERC721!");
@@ -85,6 +86,7 @@ contract MVPNFT is ERC721, ERC165 {
         require(_from == owner && _from != address(0) && _tokenId == tokenId);
         if(isContract(_to)) {
             emit Transfer(_from, _to, _tokenId);
+            approved = address(0);
             owner = _to;
             if(ERC721TokenReceiver(_to).onERC721Received(msg.sender, _from, _tokenId, "") != 0x150b7a02) {
                 revert("receiving address unable to hold ERC721!");
