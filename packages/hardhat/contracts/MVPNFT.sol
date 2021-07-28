@@ -63,7 +63,7 @@ contract MVPNFT is ERC721, ERC165 {
     }
 
     //This is using austin's code from the TG to prevent reentrancy
-    function safeTransferFrom(address _from, address _to, uint _tokenId, bytes memory data) external override payable {
+    function safeTransferFrom(address _from, address _to, uint _tokenId, bytes memory data) public override payable {
         require(msg.sender == owner || approved == msg.sender, "Msg.sender not allowed to transfer this NFT!");
         require(_from == owner && _from != address(0) && _tokenId == tokenId);
         if(isContract(_to)) {
@@ -80,23 +80,9 @@ contract MVPNFT is ERC721, ERC165 {
         }
     }
 
-    //identical to the code above however this forces "" for the data field
+    //changed the first safeTransferFrom's visibility to make this more readable.
     function safeTransferFrom(address _from, address _to, uint _tokenId) external override payable {
-        require(msg.sender == owner || approved == msg.sender, "Msg.sender not allowed to transfer this NFT!");
-        require(_from == owner && _from != address(0) && _tokenId == tokenId);
-        if(isContract(_to)) {
-            emit Transfer(_from, _to, _tokenId);
-            approved = address(0);
-            owner = _to;
-            if(ERC721TokenReceiver(_to).onERC721Received(msg.sender, _from, _tokenId, "") != 0x150b7a02) {
-                revert("receiving address unable to hold ERC721!");
-            }
-        } else {
-            emit Transfer(_from, _to, _tokenId);
-            approved = address(0);
-            owner = _to;
-        }
-    }
+        safeTransferFrom(_from, _to, _tokenId, "");
     }
 
     function transferFrom(address _from, address _to, uint _tokenId) external override payable {
