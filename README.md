@@ -1,10 +1,10 @@
-# 🏗 Scaffold-ETH
+## Important Notes:
 
-> everything you need to build on Ethereum! 🚀
+> This smart contract protocol processes a transaction with a percentage of the transaction going to a charity of your choice. The charity will be represented by a wallet address predefined by the DefiSmile.sol smart contract. This example contract shows three separate wallets which addresses and percentages can be configured in the constructor. You can add and remove beneficiaries in the constructor. Just be sure to add a mapping and update sendFundz function.
 
-🧪 Quickly experiment with Solidity using a frontend that adapts to your smart contract:
+> Why did I use allowances as opposed to directly sending to the beneficiary? I wanted the contract to be flexible as possible with the potential to add multiple charities/ beneficiaries and be able to customize the percentages. Depending on the size of the tranaction if the resulting payout to a beneficiary is very small it may be the case that it costs more gas to get the funds than the amount you actually recieve. Using allowances allows the funds to accumulate before being transfered to the beneficiary. The only downside is the beneficiary pays gas to get the payout. 
 
-![image](https://user-images.githubusercontent.com/2653167/124158108-c14ca380-da56-11eb-967e-69cde37ca8eb.png)
+> If you were to optimize this contract for fast payments in small amounts I would recommend the xDai stable chain. This way the tx fees are pennies and you can transfer very small amounts at a time to the beneficiaries.
 
 
 # 🏄‍♂️ Quick Start
@@ -14,32 +14,37 @@ Prerequisites: [Node](https://nodejs.org/en/download/) plus [Yarn](https://class
 > clone/fork 🏗 scaffold-eth:
 
 ```bash
-git clone https://github.com/austintgriffith/scaffold-eth.git
+git clone https://github.com/austintgriffith/scaffold-eth.git defi-smile-donations
+
+cd defi-smile-donations
+
+git checkout defi-smile-donations
 ```
 
 > install and start your 👷‍ Hardhat chain:
 
 ```bash
-cd scaffold-eth
+
 yarn install
-yarn chain
+
+yarn start
 ```
 
 > in a second terminal window, start your 📱 frontend:
 
 ```bash
-cd scaffold-eth
-yarn start
+cd defi-smile-donations
+yarn run chain
 ```
 
 > in a third terminal window, 🛰 deploy your contract:
 
 ```bash
-cd scaffold-eth
+cd defi-smile-donations
 yarn deploy
 ```
 
-🔏 Edit your smart contract `YourContract.sol` in `packages/hardhat/contracts`
+🔏 Edit your smart contract `DefiSmile.sol` in `packages/hardhat/contracts`
 
 📝 Edit your frontend `App.jsx` in `packages/react-app/src`
 
@@ -47,47 +52,14 @@ yarn deploy
 
 📱 Open http://localhost:3000 to see the app
 
-# 📚 Documentation
+Go to the second tab called "Defi Smile Dashboard".
 
-Documentation, tutorials, challenges, and many more resources, visit: [docs.scaffoldeth.io](https://docs.scaffoldeth.io)
+Here you can make transactions and see totals in realtime. 
 
-# 🔭 Learning Solidity
+To make a test transaction open an incognito window and go to https://localhost:3000
 
-📕 Read the docs: https://docs.soliditylang.org
+From here you can grab the burner account address and make a transaction from your main window to the burner account. Or vise versa.
 
-📚 Go through each topic from [solidity by example](https://solidity-by-example.org) editing `YourContract.sol` in **🏗 scaffold-eth**
+After a successful transaction try to log in a one of the charity accounts to recieve their funds. 
 
-- [Primitive Data Types](https://solidity-by-example.org/primitives/)
-- [Mappings](https://solidity-by-example.org/mapping/)
-- [Structs](https://solidity-by-example.org/structs/)
-- [Modifiers](https://solidity-by-example.org/function-modifier/)
-- [Events](https://solidity-by-example.org/events/)
-- [Inheritance](https://solidity-by-example.org/inheritance/)
-- [Payable](https://solidity-by-example.org/payable/)
-- [Fallback](https://solidity-by-example.org/fallback/)
-
-📧 Learn the [Solidity globals and units](https://solidity.readthedocs.io/en/v0.6.6/units-and-global-variables.html)
-
-# 🛠 Buidl
-
-Check out all the [active branches](https://github.com/austintgriffith/scaffold-eth/branches/active), [open issues](https://github.com/austintgriffith/scaffold-eth/issues), and join/fund the 🏰 [BuidlGuidl](https://BuidlGuidl.com)!
-
-
-# 💬 Support Chat
-
-Join the telegram [support chat 💬](https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA) to ask questions and find others building with 🏗 scaffold-eth!
-
----
-
-🎛 Any web3 dev environment is complex, that's why 🏗 Scaffold-ETH comes with everything you need, already working together:
-
-- Hardhat for your local blockchain, deploying, and testing smart contracts.
-- React for building a frontend, using many useful pre-made components and hooks.
-- Ant for your UI. (You can easily changed to another library you prefer)
-- Surge / S3 / IPFS for publishing your app.
-- Tenderly / The Graph / Etherscan / Infura / Blocknative for infrastructure.
-- Support for L2 / Sidechains like Optimism and Arbitrum.
-
----
-
-🙏 Please check out our [Gitcoin grant](https://gitcoin.co/grants/2851/scaffold-eth) too!
+To do this, be sure to change the hardcoded addesses in the smart contract as well as App.jsx file. 
