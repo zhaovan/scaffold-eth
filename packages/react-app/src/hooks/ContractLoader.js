@@ -56,6 +56,7 @@ export default function useContractLoader(providerOrSigner, config = {}) {
             provider = signer.provider;
           } else if (accounts && accounts.length > 0) {
             signer = providerOrSigner.getSigner();
+            console.log('signerr', signer)
             provider = providerOrSigner;
           } else {
             signer = providerOrSigner;

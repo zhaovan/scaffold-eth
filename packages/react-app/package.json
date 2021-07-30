@@ -17,6 +17,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
     "@apollo/react-hooks": "^4.0.0",
+    "@gnosis.pm/safe-core-sdk": "^0.3.1",
     "@ramp-network/ramp-instant-sdk": "^2.2.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -33,7 +34,7 @@
     "bnc-notify": "^1.5.0",
     "dotenv": "^8.2.0",
     "eth-hooks": "^1.1.2",
-    "ethers": "^5.3.0",
+    "ethers": "^5.3.1",
     "graphiql": "^1.0.5",
     "graphql": "^15.3.0",
     "graphql-request": "^3.4.0",
@@ -48,6 +49,7 @@
     "react-qr-reader": "^2.2.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
+    "web3": "^1.4.0",
     "web3modal": "^1.9.1"
   },
   "devDependencies": {
