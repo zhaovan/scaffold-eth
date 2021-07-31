@@ -10,7 +10,7 @@ The topic of 'Login with Ethereum' came up during Vitalik's talk at EthCC.https:
 
 ![](https://i.imgur.com/DHWDbcb.jpg)
 
-I wanted to demonstrate how easy this is to implement in pracatice using a serverless backend and a simple web3 enabled frontend.
+I wanted to demonstrate how easy this is to implement in practice using a serverless backend and a simple web3 enabled frontend.
 
 This guide demonstrates how to integrate 'log in with Ethereum' with a serverless API on AWS.
 
