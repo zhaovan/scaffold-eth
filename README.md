@@ -75,11 +75,6 @@ See the list of delegators for a particular delegatee
 Enter the delegatee address and see the list of delegators!
 
 
-### Gnosis Multi-Sig Interaction (WIP)
-Allow the DAO members to easily setup a multi-sig wallet with a custom UI and backend
-
-The `yarn chain` and `yarn deploy` commands are for this purposes to deploy the tweaked gnosis contract
-
 
 ## Contact
 
