@@ -57,6 +57,16 @@
       "packages/*"
     ],
     "nohoist": [
+      "**/eslint",
+      "**/eslint/**",
+      "**/prettier",
+      "**/prettier/**",
+      "**/eslint-plugin-prettier",
+      "**/eslint-plugin-prettier/**",
+      "**/eslint-config-prettier",
+      "**/eslint-config-prettier/**",
+      "**/jest",
+      "**/jest/**",
       "**/@graphprotocol/graph-ts",
       "**/@graphprotocol/graph-ts/**",
       "**/hardhat",

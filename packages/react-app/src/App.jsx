@@ -408,7 +408,7 @@ function App(props) {
               }}
               to="/exampleui"
             >
-              ExampleUI
+              Example Authentication
             </Link>
           </Menu.Item>
           <Menu.Item key="/mainnetdai">

@@ -76,9 +76,6 @@
     "s3-folder-upload": "^2.3.1",
     "surge": "^0.21.5"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "scripts": {
     "build": "react-scripts build",
     "eject": "react-scripts eject",
