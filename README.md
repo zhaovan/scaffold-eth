@@ -16,6 +16,12 @@ This guide demonstrates how to integrate 'log in with Ethereum' with a serverles
 
 The front end is based on Scaffold-ETH.
 
+
+
+https://user-images.githubusercontent.com/4401444/127770033-506de912-243b-4d8d-8e62-0a186733a0d9.mov
+
+
+
 ### How it works
 
 The API implements a challenge response pattern to confirm the use controls the specified Ethereum address.
