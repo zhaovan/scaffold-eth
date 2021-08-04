@@ -36,7 +36,7 @@ const DisplayVariable = ({ contractFunction, functionInfo, refreshRequired, trig
           {functionInfo.name}
         </Col>
         <Col span={14}>
-          <h2>{tryToDisplay(variable)}</h2>
+          <h2>{tryToDisplay(variable,true)}</h2>
         </Col>
         <Col span={2}>
           <h2>
