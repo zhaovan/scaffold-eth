@@ -26,21 +26,21 @@ contract DefiSmile {
         benePayout3[approvedBeneficiaries[2]] = true;
     }
 
-    event Withdraw( address indexed to, uint256 amount );       // Emitted when funds are sent to this smart contract to be divided up.
-    event Deposit( address indexed from, uint256 amount );      // Emitted when funds are sent from this smart contract to the beneficiaries.
+    event Withdraw( address indexed to, uint256 amount );       // Emitted when funds are sent from this smart contract to the beneficiaries.
+    event Deposit( address indexed from, uint256 amount );      // Emitted when funds are sent to this smart contract to be divided up.
     mapping (address => uint256) private _payoutTotals;         // The beneficiaries address and how much they are approved for.
-    mapping (address => bool) public benePayout1;              // 1% // Benficiaries percent payout mappings for verification.
-    mapping (address => bool) public benePayout2;              // 5%
-    mapping (address => bool) public benePayout3;              // 10%
+    mapping (address => bool) public benePayout1;               // 1% // Benficiaries percent payout mappings for verification.
+    mapping (address => bool) public benePayout2;               // 5%
+    mapping (address => bool) public benePayout3;               // 10%
 
-   //-----------------------------------------Beneficiary-Allowance----------------------------------------------------
+    //-------------------------------------------------------------- Beneficiary-Allowance ----------------------------------------------------------------------//
     // An allowance system was chosen to reduce the amount of gas used by the contract and to preserve the maximum number of funds as possible to be retrieved. 
     // If transfer calls are made on every transaction there is a larger net value that is used in gas as opposed to one lump sum. At the call of the reciever. 
     // One option available is afront end trigger which could  send out an email notifications to beneficiaries when their balance is over a certain threshold. 
     // This can direct them to a front end getPayout function call. 
 
     // Internal
-    function increasePayout(address recipient, uint256 addedValue) internal returns (bool) {
+    function increasePayout(address recipient, uint256 addedValue) internal returns (bool success) {
         uint256 currentBalance = 0;
         if(_payoutTotals[recipient] != 0) {
             currentBalance = _payoutTotals[recipient];
@@ -50,7 +50,7 @@ contract DefiSmile {
     }
 
     // Internal
-    function decreasePayout(address beneficiary, uint256 subtractedValue) internal returns (bool) {
+    function decreasePayout(address beneficiary, uint256 subtractedValue) internal returns (bool success) {
         uint256 currentAllowance = _payoutTotals[beneficiary];
         require(currentAllowance >= subtractedValue, "ERC20: decreased payout below zero");
         uint256 newAllowance = currentAllowance - subtractedValue;
@@ -77,18 +77,18 @@ contract DefiSmile {
 
             // UNICEF 1% of total
             if (benePayout1[approvedBeneficiaries[i]] == true){
-                increasePayout(approvedBeneficiaries[i], msg.value*benePayoutPercent1/100);
+                increasePayout(approvedBeneficiaries[i], msg.value * benePayoutPercent1 / 100);
             }
             // MUMA 5% of total
             if (benePayout2[approvedBeneficiaries[i]] == true){
-                increasePayout(approvedBeneficiaries[i], msg.value*benePayoutPercent2/100);
+                increasePayout(approvedBeneficiaries[i], msg.value * benePayoutPercent2 / 100);
             }
             // DevSol 10% of total
             if (benePayout3[approvedBeneficiaries[i]] == true){
-                increasePayout(approvedBeneficiaries[i], msg.value*benePayoutPercent3/100); 
+                increasePayout(approvedBeneficiaries[i], msg.value * benePayoutPercent3 / 100); 
             }
         }
-        recipient.transfer(msg.value*( 100-(benePayoutPercent1+benePayoutPercent2+benePayoutPercent3)) /100 );
+        recipient.transfer(msg.value * (100 - (benePayoutPercent1 + benePayoutPercent2 + benePayoutPercent3)) / 100);
     }
 
     // Contract to recieve funds and emit event
@@ -111,7 +111,7 @@ contract DefiSmile {
     }
 
     // Beneficiary calls function to receive their total allowance.
-    function getPayout() public returns (bool) {
+    function getPayout() public returns (bool success) {
         address sender = msg.sender;
         for (uint256 i=0; i < approvedBeneficiaries.length; i++) {
             if (approvedBeneficiaries[i] == msg.sender) {
