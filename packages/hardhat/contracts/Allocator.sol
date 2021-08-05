@@ -1,19 +1,23 @@
 pragma solidity >=0.6.0 <0.7.0;
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "./IWETH9.sol";
 import "./IGovernor.sol";
 
 contract Allocator is ReentrancyGuard {
 
+  using SafeERC20 for IERC20;
+
   event Distribute( address indexed token, address indexed wallet, uint256 amount );
 
-  IWETH9 wethContract;
-  IGovernor governorContract;
+  IWETH9 public immutable wethContract;
+  IGovernor public immutable governorContract;
 
   constructor(address governor, address payable weth) public {
+    require( governor != address(0), "governor cant be 0x0");
+    require( weth != address(0), "weth cant be 0x0");
     governorContract = IGovernor(governor);
     wethContract = IWETH9(weth);
   }
@@ -29,11 +33,10 @@ contract Allocator is ReentrancyGuard {
     uint256 denominator = governorContract.denominator();
     address[] memory recipients = governorContract.getRecipients();
     uint8[] memory ratios = governorContract.getRatios();
-    uint8 length = governorContract.recipientsLength();
 
-    for(uint8 i = 0; i < length; i++){
+    for(uint256 i = 0;i < ratios.length; i++){
       uint256 next = balance * ratios[i];
-      require( next >= balance, "overflow"); 
+      require( next >= balance, "overflow");
       uint256 amount = next / denominator;
       tokenContract.transfer( recipients[i], amount );
       emit Distribute( tokenAddress, recipients[i], amount );

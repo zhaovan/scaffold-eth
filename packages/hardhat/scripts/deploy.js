@@ -15,7 +15,7 @@ const main = async () => {
 
   if(!existingGovernorAddress){
 
-    /*const governor = await deploy("Governor",[
+    const governor = await deploy("Governor",[
       "0x34aA3F359A9D614239015126635CE7732c18fDF3",//"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", //gnosis safe with auryn, austin, and owocki as owners
       [
         "0xFcC41c4614bD464bA28ad96f93aAdaA7bA6c8680",//clr fund
@@ -27,12 +27,12 @@ const main = async () => {
         33,
         33
       ]
-    ])*/
+    ])
 
-    const mainnetGovAddress = "0xd64A7eBc7155083a6356651109061c0E834e3451"
+    //const mainnetGovAddress = "0xd64A7eBc7155083a6356651109061c0E834e3451"
 
-    //const WETH9 = await deploy("WETH9")
-    const allocator = await deploy("Allocator",[ mainnetGovAddress, "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" ])
+    const WETH9 = await deploy("WETH9")
+    const allocator = await deploy("Allocator",[ governor.address/*mainnetGovAddress*/ ,WETH9.address /*"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"*/ ])
 
 /*
     const deployerWallet = ethers.provider.getSigner()

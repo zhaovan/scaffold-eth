@@ -1,15 +1,14 @@
 pragma solidity >=0.6.0 <0.7.0;
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./IWETH9.sol";
+import "./IGovernor.sol";
 
-contract Governor is Ownable{
+contract Governor is IGovernor, Ownable{
 
   event AllocationSet( address[] recipients, uint8[] ratios );
 
-  uint256 public denominator;
+  uint256 public override denominator;
   address[] public recipients;
   uint8[] public ratios;
 
@@ -18,11 +17,11 @@ contract Governor is Ownable{
     transferOwnership( newOwner );
   }
 
-  function getRatios() public view returns(uint8[] memory) {
+  function getRatios() public view override returns(uint8[] memory) {
     return ratios;
   }
 
-  function getRecipients() public view returns(address[] memory) {
+  function getRecipients() public view override returns(address[] memory) {
     return recipients;
   }
 
@@ -32,15 +31,16 @@ contract Governor is Ownable{
     require( _recipients.length == _ratios.length ,"Wallet and Ratio length not equal");
     recipients = _recipients;
     ratios = _ratios;
-    denominator = 0;
-    for(uint8 i = 0; i < recipients.length; i++){
+    uint256 localDenominator = 0;
+    for(uint256 i = 0; i < _recipients.length; i++){
       require(_recipients[i]!=address(this),"Contract cant be recipient");
-      denominator+=_ratios[i];
+      localDenominator+=_ratios[i];
     }
-    emit AllocationSet(recipients,ratios);
+    denominator = localDenominator;
+    emit AllocationSet(_recipients,_ratios);
   }
 
-  function recipientsLength() public view returns(uint8 count) {
+  function recipientsLength() public view override returns(uint8 count) {
       return uint8(recipients.length);
   }
 
