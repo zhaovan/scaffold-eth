@@ -53,7 +53,7 @@ contract MVPNFT {
     }
 
     //This is using austin's code from the TG to prevent reentrancy
-    function safeTransferFrom(address _from, address _to, uint _tokenId, bytes memory data) public {
+    function safeTransferFrom(address _from, address _to, uint _tokenId, bytes memory data) public payable {
         require(msg.sender == owner || approved == msg.sender, "Msg.sender not allowed to transfer this NFT!");
         require(_from == owner && _from != address(0) && _tokenId == tokenId);
         emit Transfer(_from, _to, _tokenId);
@@ -67,11 +67,11 @@ contract MVPNFT {
     }
 
     //changed the first safeTransferFrom's visibility to make this more readable.
-    function safeTransferFrom(address _from, address _to, uint _tokenId) external {
+    function safeTransferFrom(address _from, address _to, uint _tokenId) external payable {
         safeTransferFrom(_from, _to, _tokenId, "");
     }
 
-    function transferFrom(address _from, address _to, uint _tokenId) external {
+    function transferFrom(address _from, address _to, uint _tokenId) external payable{
         require(msg.sender == owner || approved == msg.sender, "Msg.sender not allowed to transfer this NFT!");
         require(_from == owner && _from != address(0) && _tokenId == tokenId);
         emit Transfer(_from, _to, _tokenId);
@@ -79,7 +79,7 @@ contract MVPNFT {
         owner = _to;
     }
 
-    function approve(address _approved, uint256 _tokenId) external {
+    function approve(address _approved, uint256 _tokenId) external payable {
         require(msg.sender == owner, "Msg.sender not owner!");
         require(_tokenId == tokenId, "tokenId invald");
         emit Approval(owner, _approved, _tokenId);
