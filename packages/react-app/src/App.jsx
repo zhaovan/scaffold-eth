@@ -197,6 +197,10 @@ function App(props) {
   const balance = useContractReader(readContracts, "YourCollectible", "balanceOf", [address]);
   console.log("🤗 balance:", balance);
 
+  // keep track of a variable from the contract in the local React state:
+  const counter = useContractReader(readContracts, "YourCollectible", "counter");
+  console.log("🤗 counter:", counter);
+
   // 📟 Listen for broadcast events
   const transferEvents = useEventListener(readContracts, "YourCollectible", "Transfer", localProvider, 1);
   console.log("📟 Transfer events:", transferEvents);
@@ -481,12 +485,43 @@ function App(props) {
 
         <Switch>
           <Route exact path="/">
+
+
             {/*
                 🎛 this scaffolding is full of commonly used components
                 this <Contract/> component will automatically parse your ABI
                 and give you a form to interact with it locally
             */}
             <div style={{ width: 640, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+
+              <div style={{padding:64}}>
+                The counter is at: <b>{counter && counter.toNumber()}</b>!
+              </div>
+
+              <div style={{padding:16}}>
+                  <Button
+                    onClick={() => {
+                      tx(writeContracts.YourCollectible.mintItem(address, "QmfVMAmNM1kDEBYrC2TPzQDoCRFH6F5tE1e9Mr4FkkR5Xr"));
+                    }}
+                  >
+                    Mint Buffalo
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      tx(writeContracts.YourCollectible.mintItem(address, "QmVHi3c4qkZcH3cJynzDXRm5n7dzc9R9TUtUcfnWQvhdcw"));
+                    }}
+                  >
+                    Mint Zebra
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      tx(writeContracts.YourCollectible.mintItem(address, "QmcvcUaKf6JyCXhLD1by6hJXNruPQGs3kkLg2W1xr7nF1j"));
+                    }}
+                  >
+                    Mint Rhino
+                  </Button>
+              </div>
+
               <List
                 bordered
                 dataSource={yourCollectibles}
