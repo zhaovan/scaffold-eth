@@ -93,7 +93,7 @@ if (DEBUG) console.log("📡 Connecting to Mainnet Ethereum");
 //
 // attempt to connect to our own scaffold eth rpc and if that fails fall back to infura...
 // Using StaticJsonRpcProvider as the chainId won't change see https://github.com/ethers-io/ethers.js/issues/901
-const scaffoldEthProvider = navigator.onLine ? new ethers.providers.StaticJsonRpcProvider("https://rpc.scaffoldeth.io:48544") : null;
+const scaffoldEthProvider = null && navigator.onLine ? new ethers.providers.StaticJsonRpcProvider("https://rpc.scaffoldeth.io:48544") : null;
 const mainnetInfura = navigator.onLine ? new ethers.providers.StaticJsonRpcProvider("https://mainnet.infura.io/v3/" + INFURA_ID) : null;
 // ( ⚠️ Getting "failed to meet quorum" errors? Check your INFURA_I
 
@@ -222,11 +222,12 @@ function App(props) {
           console.log("ipfsHash", ipfsHash);
 
           const jsonManifestBuffer = await getFromIPFS(ipfsHash);
+          const obj = JSON.parse(jsonManifestBuffer.toString())
 
           try {
             const jsonManifest = JSON.parse(jsonManifestBuffer.toString());
             console.log("jsonManifest", jsonManifest);
-            collectibleUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
+            collectibleUpdate.push({ id: tokenId, imageWithPath: "https://ipfs.io/ipfs/"+obj.image, owner: address, ...jsonManifest });
           } catch (e) {
             console.log(e);
           }
@@ -487,6 +488,18 @@ function App(props) {
                 and give you a form to interact with it locally
             */}
             <div style={{ width: 640, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+
+              <div style={{padding:32}}>
+                <Button
+                  onClick={() => {
+                    console.log("MINT!");
+                    tx(writeContracts.YourCollectible.requestMint({value: ethers.utils.parseEther("0.001")}));
+                  }}
+                >
+                  Mint
+                </Button>
+              </div>
+
               <List
                 bordered
                 dataSource={yourCollectibles}
@@ -502,7 +515,7 @@ function App(props) {
                         }
                       >
                         <div>
-                          <img src={item.image} style={{ maxWidth: 150 }} />
+                          <img src={item.imageWithPath} style={{ maxWidth: 150 }} />
                         </div>
                         <div>{item.description}</div>
                       </Card>
