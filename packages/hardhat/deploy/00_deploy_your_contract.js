@@ -1,16 +1,24 @@
 // deploy/00_deploy_your_contract.js
 
-//const { utils } = require("ethers");
+const { utils } = require("ethers");
 
 module.exports = async ({ getNamedAccounts, deployments }) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
-  await deploy("YourContract", {
+  let tokenDeployResult = await deploy("YourContract", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
-    // args: [ "Hello", utils.parseEther("1.5") ],
+    //args: [ utils.parseEther("10000") ],
     log: true,
   });
+
+  await deploy("YourDEX", {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    args: [ tokenDeployResult.address ],
+    log: true,
+  });
+
 
   /*
     // Getting a previously deployed contract

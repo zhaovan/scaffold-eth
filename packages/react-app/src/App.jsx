@@ -443,6 +443,13 @@ function App(props) {
             */}
 
             <Contract
+              name="YourDEX"
+              signer={userSigner}
+              provider={localProvider}
+              address={address}
+              blockExplorer={blockExplorer}
+            />
+            <Contract
               name="YourContract"
               signer={userSigner}
               provider={localProvider}

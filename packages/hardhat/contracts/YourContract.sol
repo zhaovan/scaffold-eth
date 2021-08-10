@@ -1,22 +1,9 @@
-pragma solidity >=0.8.0 <0.9.0;
+pragma solidity ^0.6.7;
 //SPDX-License-Identifier: MIT
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-import "hardhat/console.sol";
-//import "@openzeppelin/contracts/access/Ownable.sol"; //https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
-
-contract YourContract {
-
-  //event SetPurpose(address sender, string purpose);
-
-  string public purpose = "Building Unstoppable Apps";
-
-  constructor() {
-    // what should we do on deploy?
-  }
-
-  function setPurpose(string memory newPurpose) public {
-      purpose = newPurpose;
-      console.log(msg.sender,"set purpose to",purpose);
-      //emit SetPurpose(msg.sender, purpose);
-  }
+contract YourContract is ERC20 {
+    constructor() public ERC20("Rabbits", "🐰") {
+        _mint(0x6e92B3775A8459c39d6a4a8C798efB107385572d, 1000 ether);
+    }
 }
