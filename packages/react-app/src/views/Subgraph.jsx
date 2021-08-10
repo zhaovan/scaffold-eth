@@ -10,7 +10,8 @@ import { Address } from '../components'
 const highlight = {
   marginLeft: 4,
   marginRight: 8,
-  /* backgroundColor: "#f9f9f9", */ padding: 4,
+  //backgroundColor: "#f9f9f9",
+  padding: 4,
   borderRadius: 4,
   fontWeight: 'bolder'
 }
@@ -53,6 +54,7 @@ function Subgraph(props) {
     {
       title: 'Sender',
       key: 'id',
+      // eslint-disable-next-line react/display-name
       render: record => (
         <Address
           value={record.sender.id}

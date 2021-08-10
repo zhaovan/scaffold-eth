@@ -1,5 +1,5 @@
-import { SyncOutlined } from '@ant-design/icons';
-import { utils } from 'ethers';
+import { SyncOutlined } from '@ant-design/icons'
+import { utils } from 'ethers'
 import {
   Button,
   Card,
@@ -12,8 +12,8 @@ import {
   Spin,
   Switch
 } from 'antd'
-import React, { useState } from 'react';
-import { Address, Balance } from '../components';
+import React, { useState } from 'react'
+import { Address, Balance } from '../components'
 
 export default function ExampleUI({
   purpose,
@@ -73,7 +73,7 @@ export default function ExampleUI({
                         (update.gasLimit || update.gas) +
                         ' @ ' +
                         parseFloat(update.gasPrice) / 1000000000 +
-                    ' gwei',
+                        ' gwei'
                     )
                   }
                 }
@@ -151,7 +151,7 @@ export default function ExampleUI({
             */
               tx({
                 to: writeContracts.YourContract.address,
-                value: utils.parseEther('0.001'),
+                value: utils.parseEther('0.001')
               })
               /* this should throw an error about "no fallback nor receive function" until you add it */
             }}
@@ -164,7 +164,9 @@ export default function ExampleUI({
             onClick={() => {
               /* look how we call setPurpose AND send some value along */
               tx(
-                writeContracts.YourContract.setPurpose('💵 Paying for this one!', {
+                writeContracts.YourContract.setPurpose(
+                  '💵 Paying for this one!',
+                  {
                     value: utils.parseEther('0.001')
                   }
                 )
@@ -182,8 +184,9 @@ export default function ExampleUI({
               tx({
                 to: writeContracts.YourContract.address,
                 value: utils.parseEther('0.001'),
-                data: writeContracts.YourContract.interface.encodeFunctionData('setPurpose(string)', [
-                  '🤓 Whoa so 1337!',
+                data: writeContracts.YourContract.interface.encodeFunctionData(
+                  'setPurpose(string)',
+                  ['🤓 Whoa so 1337!']
                 )
               })
               /* this should throw an error about "no fallback nor receive function" until you add it */

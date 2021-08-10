@@ -27,7 +27,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f9f9f9", */ padding: 4,
+            // backgroundColor: "#f9f9f9",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -43,7 +44,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f1f1f1", */ padding: 4,
+            // backgroundColor: "#f1f1f1",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -60,7 +62,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f9f9f9", */ padding: 4,
+            // backgroundColor: "#f9f9f9",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -76,7 +79,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f9f9f9", */ padding: 4,
+            // backgroundColor: "#f9f9f9",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -93,7 +97,7 @@ export default function Hints({
           style={{
             marginLeft: 4,
             marginRight: 4,
-            /* backgroundColor: "#f9f9f9", */
+            // backgroundColor: "#f9f9f9",
             padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
@@ -106,7 +110,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f9f9f9", */ padding: 4,
+            // backgroundColor: "#f9f9f9",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -121,7 +126,8 @@ export default function Hints({
           className='highlight'
           style={{
             margin: 4,
-            /* backgroundColor: "#f9f9f9", */ padding: 4,
+            // backgroundColor: "#f9f9f9",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -169,7 +175,8 @@ export default function Hints({
           className='highlight'
           style={{
             margin: 4,
-            /* backgroundColor: "#f9f9f9", */ padding: 4,
+            // backgroundColor: "#f9f9f9",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -191,7 +198,8 @@ export default function Hints({
           className='highlight'
           style={{
             margin: 4,
-            /* backgroundColor: "#f9f9f9", */ padding: 4,
+            // backgroundColor: "#f9f9f9",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -203,7 +211,8 @@ export default function Hints({
           className='highlight'
           style={{
             margin: 4,
-            /* backgroundColor: "#f9f9f9", */ padding: 4,
+            // backgroundColor: "#f9f9f9",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -220,7 +229,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f9f9f9", */ padding: 4,
+            // backgroundColor: "#f9f9f9",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -236,7 +246,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f9f9f9", */ padding: 4,
+            // backgroundColor: "#f9f9f9",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -248,7 +259,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f1f1f1", */ padding: 4,
+            // backgroundColor: "#f1f1f1",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -263,7 +275,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f1f1f1", */ padding: 4,
+            // backgroundColor: "#f1f1f1",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -275,7 +288,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f9f9f9", */ padding: 4,
+            // backgroundColor: "#f9f9f9",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -288,7 +302,8 @@ export default function Hints({
             className='highlight'
             style={{
               marginLeft: 4,
-              /* backgroundColor: "#f1f1f1", */ padding: 4,
+              // backgroundColor: "#f1f1f1",
+            padding: 4,
               borderRadius: 4,
               fontWeight: 'bolder'
             }}
@@ -306,7 +321,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f1f1f1", */ padding: 4,
+            // backgroundColor: "#f1f1f1",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -322,7 +338,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f1f1f1", */ padding: 4,
+            // backgroundColor: "#f1f1f1",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -334,7 +351,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f1f1f1", */ padding: 4,
+            // backgroundColor: "#f1f1f1",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -346,7 +364,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f1f1f1", */ padding: 4,
+            // backgroundColor: "#f1f1f1",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
@@ -362,7 +381,8 @@ export default function Hints({
           className='highlight'
           style={{
             marginLeft: 4,
-            /* backgroundColor: "#f9f9f9", */ padding: 4,
+            // backgroundColor: "#f9f9f9",
+            padding: 4,
             borderRadius: 4,
             fontWeight: 'bolder'
           }}
