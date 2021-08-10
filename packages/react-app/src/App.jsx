@@ -1,13 +1,13 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
 //import Torus from "@toruslabs/torus-embed"
 import WalletLink from "walletlink";
-import { Alert, Button, Col, Menu, Row } from "antd";
+import { Alert, Button, Col, Menu, Row, List, Input } from "antd";
 import "antd/dist/antd.css";
 import React, { useCallback, useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import Web3Modal from "web3modal";
 import "./App.css";
-import { Account, Contract, Faucet, GasGauge, Header, Ramp, ThemeSwitch } from "./components";
+import { Account, Contract, Faucet, GasGauge, Header, Ramp, ThemeSwitch, Address  } from "./components";
 import { INFURA_ID, NETWORK, NETWORKS } from "./constants";
 import { Transactor } from "./helpers";
 import {
@@ -106,7 +106,7 @@ const web3Modal = new Web3Modal({
           100:"https://dai.poa.network", // xDai
         },
       },
-      
+
     },
     portis: {
       display: {
@@ -233,10 +233,13 @@ function App(props) {
   ]);
 
   // keep track of a variable from the contract in the local React state:
-  const purpose = useContractReader(readContracts, "YourContract", "purpose");
+  //const purpose = useContractReader(readContracts, "YourContract", "purpose");
 
   // 📟 Listen for broadcast events
-  const setPurposeEvents = useEventListener(readContracts, "YourContract", "SetPurpose", localProvider, 1);
+  const addEntryEvents = useEventListener(readContracts, "YourContract", "AddEntry", localProvider, 1);
+
+  //const [entries, setEntries] = useState()
+  //useEffect(()=>{},[addEntryEvents])
 
   /*
   const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
@@ -411,6 +414,9 @@ function App(props) {
     );
   }
 
+  const [ votingAmounts, setVotingAmounts ] = useState({})
+
+
   return (
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
@@ -425,49 +431,20 @@ function App(props) {
               }}
               to="/"
             >
-              YourContract
+              QD Prototype
             </Link>
           </Menu.Item>
-          <Menu.Item key="/hints">
+          <Menu.Item key="/contract">
             <Link
               onClick={() => {
-                setRoute("/hints");
+                setRoute("/contract");
               }}
-              to="/hints"
+              to="/contract"
             >
-              Hints
+              Contract
             </Link>
           </Menu.Item>
-          <Menu.Item key="/exampleui">
-            <Link
-              onClick={() => {
-                setRoute("/exampleui");
-              }}
-              to="/exampleui"
-            >
-              ExampleUI
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="/mainnetdai">
-            <Link
-              onClick={() => {
-                setRoute("/mainnetdai");
-              }}
-              to="/mainnetdai"
-            >
-              Mainnet DAI
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="/subgraph">
-            <Link
-              onClick={() => {
-                setRoute("/subgraph");
-              }}
-              to="/subgraph"
-            >
-              Subgraph
-            </Link>
-          </Menu.Item>
+
         </Menu>
 
         <Switch>
@@ -478,63 +455,46 @@ function App(props) {
                 and give you a form to interact with it locally
             */}
 
+            <div style={{ width: 600, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+              <h2>Plz Vote:</h2>
+              <List
+                dataSource={addEntryEvents}
+                renderItem={item => {
+                  //event AddEntry(address admin, string name, address wallet);
+                  console.log("item",item)
+                  const key = item.blockNumber + "_" + item.admin + "_" + item.wallet
+
+                  console.log("votingAmounts[key]",votingAmounts[key])
+
+                  return (
+                    <List.Item style={{padding:16}} key={key}>
+                      <Address address={item.wallet} ensProvider={mainnetProvider} fontSize={16} />
+                      {item.name}
+                      <Input style={{width:100,margin:8}} placeHolder={"vote amount"} value={votingAmounts[key]} onChange={(e)=>{
+                        setVotingAmounts({...votingAmounts, key: e.target.value})
+                      }}/>
+                      <Button
+                        onClick={() => {
+                          tx( writeContracts.YourContract.vote(item.name, item.wallet, votingAmounts[key]) )
+                        }}
+                      >
+                        Vote
+                      </Button>
+                    </List.Item>
+                  );
+                }}
+              />
+            </div>
+
+
+          </Route>
+          <Route path="/contract">
             <Contract
               name="YourContract"
               signer={userSigner}
               provider={localProvider}
               address={address}
               blockExplorer={blockExplorer}
-            />
-          </Route>
-          <Route path="/hints">
-            <Hints
-              address={address}
-              yourLocalBalance={yourLocalBalance}
-              mainnetProvider={mainnetProvider}
-              price={price}
-            />
-          </Route>
-          <Route path="/exampleui">
-            <ExampleUI
-              address={address}
-              userSigner={userSigner}
-              mainnetProvider={mainnetProvider}
-              localProvider={localProvider}
-              yourLocalBalance={yourLocalBalance}
-              price={price}
-              tx={tx}
-              writeContracts={writeContracts}
-              readContracts={readContracts}
-              purpose={purpose}
-              setPurposeEvents={setPurposeEvents}
-            />
-          </Route>
-          <Route path="/mainnetdai">
-            <Contract
-              name="DAI"
-              customContract={mainnetContracts && mainnetContracts.contracts && mainnetContracts.contracts.DAI}
-              signer={userSigner}
-              provider={mainnetProvider}
-              address={address}
-              blockExplorer="https://etherscan.io/"
-            />
-            {/*
-            <Contract
-              name="UNI"
-              customContract={mainnetContracts && mainnetContracts.contracts && mainnetContracts.contracts.UNI}
-              signer={userSigner}
-              provider={mainnetProvider}
-              address={address}
-              blockExplorer="https://etherscan.io/"
-            />
-            */}
-          </Route>
-          <Route path="/subgraph">
-            <Subgraph
-              subgraphUri={props.subgraphUri}
-              tx={tx}
-              writeContracts={writeContracts}
-              mainnetProvider={mainnetProvider}
             />
           </Route>
         </Switch>
