@@ -1,5 +1,5 @@
-import { constants } from "ethers";
-import { useEffect, useState } from "react";
+import { constants } from 'ethers'
+import { useEffect, useState } from 'react'
 
 /*
   ~ What it does? ~
@@ -17,15 +17,17 @@ import { useEffect, useState } from "react";
 */
 
 const useResolveName = (provider, ensName) => {
-  const [address, setAddress] = useState(constants.AddressZero);
+  const [address, setAddress] = useState(constants.AddressZero)
 
   useEffect(() => {
     if (provider) {
-      provider.resolveName(ensName).then(resolvedAddress => setAddress(resolvedAddress));
+      provider
+        .resolveName(ensName)
+        .then(resolvedAddress => setAddress(resolvedAddress))
     }
-  }, [provider, ensName]);
+  }, [provider, ensName])
 
-  return address;
-};
+  return address
+}
 
-export default useResolveName;
+export default useResolveName
