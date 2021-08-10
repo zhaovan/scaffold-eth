@@ -41,9 +41,8 @@ const useUserSigner = (injectedProvider, localProvider) => {
           console.log('🔑 Incoming Private Key...')
           rawPK = incomingPK
           window.history.pushState({}, '', '/')
-          const currentPrivateKey = window.localStorage.getItem(
-            'metaPrivateKey'
-          )
+          const currentPrivateKey =
+            window.localStorage.getItem('metaPrivateKey')
           if (currentPrivateKey && currentPrivateKey !== rawPK) {
             window.localStorage.setItem(
               'metaPrivateKey_backup' + Date.now(),

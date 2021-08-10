@@ -303,7 +303,7 @@ export default function Hints({
             style={{
               marginLeft: 4,
               // backgroundColor: "#f1f1f1",
-            padding: 4,
+              padding: 4,
               borderRadius: 4,
               fontWeight: 'bolder'
             }}

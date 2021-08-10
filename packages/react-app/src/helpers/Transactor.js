@@ -105,9 +105,8 @@ export default function Transactor(providerOrSigner, gasPrice, etherscan) {
             const txResult = await tx
             const listeningInterval = setInterval(async () => {
               console.log('CHECK IN ON THE TX', txResult, provider)
-              const currentTransactionReceipt = await provider.getTransactionReceipt(
-                txResult.hash
-              )
+              const currentTransactionReceipt =
+                await provider.getTransactionReceipt(txResult.hash)
               if (
                 currentTransactionReceipt &&
                 currentTransactionReceipt.confirmations
