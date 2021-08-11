@@ -38,7 +38,7 @@ contract Allocator is ReentrancyGuard {
       uint256 next = balance * ratios[i];
       require( next >= balance, "overflow");
       uint256 amount = next / denominator;
-      tokenContract.transfer( recipients[i], amount );
+      tokenContract.safeTransfer( recipients[i], amount );
       emit Distribute( tokenAddress, recipients[i], amount );
     }
   }
