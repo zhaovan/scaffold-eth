@@ -200,6 +200,7 @@ function App(props) {
   //
   const yourBalance = balance && balance.toNumber && balance.toNumber();
   const [yourCollectibles, setYourCollectibles] = useState();
+  const [phaseValue, setPhaseValue] = useState("")
 
   useEffect(() => {
     const updateYourCollectibles = async () => {
@@ -479,20 +480,23 @@ function App(props) {
                             setTransferToAddresses({ ...transferToAddresses, ...update });
                           }}
                         />
-
+                        <Input value={phaseValue} onChange={(e) => {
+                          console.log(e.target.value)
+                          setPhaseValue(e.target.value)
+                        }}></Input>
                         <Button
                           onClick={() => {
                             console.log("writeContracts", writeContracts);
                             tx(writeContracts.ButterflyClaims.transferFrom(address, transferToAddresses[id], id));
+                            setForceLookup(forceLookup + 1);
                           }}
                         >
                           Transfer
                         </Button>
-
-
                         <Button onClick={() => {
                           console.log("react: changing phase");
-                          tx(writeContracts.ButterflyClaims.setPhase(id, 1));
+                          console.log(phaseValue);
+                          tx(writeContracts.ButterflyClaims.setPhase(id, phaseValue));
                         }}>change phase</Button>
                       </div>
 
