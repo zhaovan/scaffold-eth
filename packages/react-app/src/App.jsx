@@ -4,7 +4,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import { Alert, Button, Card, Col, Input, List, Menu, Row } from "antd";
 import "antd/dist/antd.css";
 import { useUserAddress } from "eth-hooks";
-import React, { useCallback, useEffect, useState, useReducer } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ReactJson from "react-json-view";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import Web3Modal from "web3modal";
@@ -200,7 +200,7 @@ function App(props) {
   //
   const yourBalance = balance && balance.toNumber && balance.toNumber();
   const [yourCollectibles, setYourCollectibles] = useState();
-  const [phaseValue, setPhaseValue] = useState("")
+  const [phaseValue, setPhaseValue] = useState([]);
 
   useEffect(() => {
     const updateYourCollectibles = async () => {
@@ -480,9 +480,10 @@ function App(props) {
                             setTransferToAddresses({ ...transferToAddresses, ...update });
                           }}
                         />
-                        <Input value={phaseValue} onChange={(e) => {
-                          console.log(e.target.value)
-                          setPhaseValue(e.target.value)
+                        <Input value={phaseValue[id-1]} onChange={(e) => {
+                          console.log(e.target.value);
+                          phaseValue[id-1] = e.target.value;                          
+                          setPhaseValue(phaseValue);
                         }}></Input>
                         <Button
                           onClick={() => {
@@ -496,7 +497,7 @@ function App(props) {
                         <Button onClick={() => {
                           console.log("react: changing phase");
                           console.log(phaseValue);
-                          tx(writeContracts.ButterflyClaims.setPhase(id, phaseValue));
+                          tx(writeContracts.ButterflyClaims.setPhase(id, phaseValue[id-1]));
                           setForceLookup(forceLookup + 1);
                         }}>change phase</Button>
                       </div>
