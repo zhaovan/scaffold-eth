@@ -11,12 +11,9 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 contract ButterflyClaims is ERC721  {
 
   string[] public phases = [
-    "QmbccRYPd2M6XKop2HiNHZWwbXUErsyFwN8HTEcwQi2ohJ",
-    "QmargAoKGcqS5AGSrAkTDnaHEtJo47F1tt2cS8icmnnWcM",
-    "QmcWw66wumDMGvTGUqRshu7xPrV9qCRfVUdorabYoVknjd",
-    "QmP1cSxkd4dAyFy5imwP6P5NGjhcGkSoeyXcHu8tMkmxGH",
-    "QmTm54sPYNc3vJWbGoMfpe5hRov94DPgG5tBcBq3jvz4Cf",
-    "QmaimX2Smov2uBXQDXci5m9GzehiXUZdUbiYCE9nPxxMxG"
+    "QmdQJ3oWyMU6HuDHDAPZtU1daKpREUP8pUgFX2zSzqZ85j",
+    "QmcfUfyfXZTvQUSk7ABjfkm83ejQp4kmwAnAtbXWkZJrhi",
+    "Qmb78qREjmXcXyQuEVGjMyF9Jn7guFDvXirjVopLq2sPDY"
   ];
 
   mapping (uint256 => uint256) public birth;

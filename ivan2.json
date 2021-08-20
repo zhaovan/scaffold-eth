@@ -1,0 +1,13 @@
+{
+    "attributes": [
+        {
+            "trait_type": "Limit",
+            "value": "1"
+        }
+    ],
+    "name": "Ivan 0",
+    "description": "AAA",
+    "drawing": "QmT7fn8u1dWWKdqAV4j7zzArUscmLXtRPnqdk7nTxvhZze",
+    "image": "https://ipfs.io/ipfs/QmT7fn8u1dWWKdqAV4j7zzArUscmLXtRPnqdk7nTxvhZze?filename=phase3.png",
+    "external_url": "https://www.google.com"
+}
