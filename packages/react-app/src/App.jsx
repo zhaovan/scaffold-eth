@@ -49,7 +49,7 @@ const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" }
 */
 
 /// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS.rinkeby // rinkeby; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const targetNetwork = NETWORKS.localhost// rinkeby; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 const opensea = "https://testnets.opensea.io/assets/"
 
@@ -218,11 +218,11 @@ function App(props) {
           const jsonManifestBuffer = await getFromIPFS(ipfsHash);
 
           try {
-              const jsonManifest = JSON.parse(jsonManifestBuffer.toString());
-              console.log("jsonManifest", jsonManifest);
-              collectibleUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
-              //if(tokenIndex>=balance||tokenIndex%9){
-              //}
+            const jsonManifest = JSON.parse(jsonManifestBuffer.toString());
+            console.log("jsonManifest", jsonManifest);
+            collectibleUpdate.push({ id: tokenId, uri: tokenURI, owner: address, ...jsonManifest });
+            //if(tokenIndex>=balance||tokenIndex%9){
+            //}
           } catch (e) {
             console.log(e);
           }
@@ -428,14 +428,14 @@ function App(props) {
 
             <div style={{ width: 640, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
 
-              <div style={{padding:32}}>
+              <div style={{ padding: 32 }}>
                 <Button
-                  onClick={()=>{
-                    tx( writeContracts.ButterflyClaims.claim() )
+                  onClick={() => {
+                    tx(writeContracts.ButterflyClaims.claim())
                   }}
                   type={"primary"}
                 >
-                 Claim
+                  Claim
                 </Button>
               </div>
 
@@ -453,8 +453,8 @@ function App(props) {
                           </div>
                         }
                       >
-                        <div style={{cursor:"pointer"}} onClick={()=>{
-                          window.open(opensea+readContracts.ButterflyClaims.address+"/"+item.id)
+                        <div style={{ cursor: "pointer" }} onClick={() => {
+                          window.open(opensea + readContracts.ButterflyClaims.address + "/" + item.id)
                         }}>
                           <img src={item.image} style={{ maxWidth: 150 }} />
                         </div>
@@ -479,6 +479,7 @@ function App(props) {
                             setTransferToAddresses({ ...transferToAddresses, ...update });
                           }}
                         />
+
                         <Button
                           onClick={() => {
                             console.log("writeContracts", writeContracts);
@@ -487,6 +488,12 @@ function App(props) {
                         >
                           Transfer
                         </Button>
+
+
+                        <Button onClick={() => {
+                          console.log("react: changing phase");
+                          tx(writeContracts.ButterflyClaims.setPhase(id, 1));
+                        }}>change phase</Button>
                       </div>
 
                     </List.Item>

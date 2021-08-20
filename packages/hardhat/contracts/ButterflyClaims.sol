@@ -1,7 +1,7 @@
 pragma solidity >=0.6.0 <0.7.0;
 //SPDX-License-Identifier: MIT
 
-//import "hardhat/console.sol";
+import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 //learn more: https://docs.openzeppelin.com/contracts/3.x/erc721
@@ -21,6 +21,7 @@ contract ButterflyClaims is ERC721  {
 
   mapping (uint256 => uint256) public birth;
   mapping (uint256 => bool) public rare;
+  mapping (uint256 => uint256) public currentPhase;
 
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
@@ -44,35 +45,40 @@ contract ButterflyClaims is ERC721  {
       if(uint256(keccak256(abi.encodePacked(address(this),id,blockhash(block.number-1))))%5==1){
         rare[id] = true;
       }
-
       return id;
   }
 
+  function setPhase(uint256 tokenId, uint256 phase) public {
+    console.log("setting phase");
+    currentPhase[tokenId] = phase;
+  }
 
   function tokenURI(uint256 tokenId) public view override returns (string memory) {
       require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
       string memory _tokenURI;
 
-      uint256 age = block.timestamp - birth[tokenId];
+      // uint256 age = block.timestamp - birth[tokenId];
 
       string memory base = baseURI();
 
-      if(age<3600){
-        _tokenURI = phases[0];
-      }else if(age<3600*2){
-        _tokenURI = phases[1];
-      }else if(age<3600*3){
-        _tokenURI = phases[2];
-      }else if(age<3600*4){
-        _tokenURI = phases[3];
-      }else{
-        if(rare[tokenId]){
-          _tokenURI = phases[5];
-        }else{
-          _tokenURI = phases[4];
-        }
-      }
+      uint256 phase = currentPhase[tokenId];
+      _tokenURI = phases[phase];
+      // if(age<3600){
+      //   _tokenURI = phases[0];
+      // }else if(age<3600*2){
+      //   _tokenURI = phases[1];
+      // }else if(age<3600*3){
+      //   _tokenURI = phases[2];
+      // }else if(age<3600*4){
+      //   _tokenURI = phases[3];
+      // }else{
+      //   if(rare[tokenId]){
+      //     _tokenURI = phases[5];
+      //   }else{
+      //     _tokenURI = phases[4];
+      //   }
+      // }
 
       return string(abi.encodePacked(base, _tokenURI));
   }
