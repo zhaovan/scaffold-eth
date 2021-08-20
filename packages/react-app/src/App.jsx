@@ -200,7 +200,7 @@ function App(props) {
   //
   const yourBalance = balance && balance.toNumber && balance.toNumber();
   const [yourCollectibles, setYourCollectibles] = useState();
-  const [phaseValue, setPhaseValue] = useState([]);
+  const [phaseValue, setPhaseValue] = useState("");
 
   useEffect(() => {
     const updateYourCollectibles = async () => {
@@ -480,10 +480,11 @@ function App(props) {
                             setTransferToAddresses({ ...transferToAddresses, ...update });
                           }}
                         />
-                        <Input value={phaseValue[id-1]} onChange={(e) => {
+                        <Input value={phaseValue} onChange={(e) => {
                           console.log(e.target.value);
-                          phaseValue[id-1] = e.target.value;                          
-                          setPhaseValue(phaseValue);
+                          // phaseValue[id-1] = e.target.value; 
+                          // console.log(phaseValue);                         
+                          setPhaseValue(e.target.value);
                         }}></Input>
                         <Button
                           onClick={() => {
