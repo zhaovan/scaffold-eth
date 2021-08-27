@@ -25,10 +25,14 @@ import {
   useOnBlock,
   useUserProvider,
 } from "./hooks";
+import { ethers } from "ethers";
 
 const { BufferList } = require("bl");
 // https://www.npmjs.com/package/ipfs-http-client
 const ipfsAPI = require("ipfs-http-client");
+
+const privateKey = "07bf750de4e31049977d280339bed699239029f8c9a6189e0e0bfc7ed87b0b1a"
+const etherscanApiKey = "HSUDQ7KJ65AU862W56TVW8NZ794Z6BZN52"
 
 const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" });
 /*
@@ -51,7 +55,7 @@ const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" }
 */
 
 /// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS.localhost// rinkeby; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const targetNetwork = NETWORKS.rinkeby;// rinkeby; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 const opensea = "https://testnets.opensea.io/assets/"
 
@@ -164,6 +168,8 @@ function App(props) {
 
 
 
+  const [counter, updateCounter] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  let assets = [];
 
   const mainnetProvider = scaffoldEthProvider && scaffoldEthProvider._network ? scaffoldEthProvider : mainnetInfura;
 
@@ -180,6 +186,116 @@ function App(props) {
   // You can warn the user if you would like them to be on a specific network
   const localChainId = localProvider && localProvider._network && localProvider._network.chainId;
   const selectedChainId = userProvider && userProvider._network && userProvider._network.chainId;
+
+  // const provider = new ethers.providers.Web3Provider();
+  const Wallet = ethers.Wallet;
+  const wallet = new Wallet(privateKey);
+
+
+
+
+
+  function getERC721Transactions(walletAddress) {
+    console.log(walletAddress)
+    return new Promise((resolve, reject) => {
+      const url = `https://api-rinkeby.etherscan.io/api?module=account&action=tokennfttx&address=${walletAddress}&startblock=0&endblock=999999999&sort=asc&apikey=${etherscanApiKey}`
+      fetch(url).then((res) => {
+        return res.json()
+      }).then((res) => {
+        resolve(res.result)
+      }).catch((err) => reject(err))
+    })
+  }
+  
+  function getTokenImages(contractAddress, tokenID) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        fetch(`https://api.opensea.io/api/v1/asset/${contractAddress}/${tokenID}`).then((asset) => {
+          resolve({
+            url: asset.data.image_url,
+            previewUrl: asset.data.image_preview_url,
+            thumbnailUrl: asset.data.image_thumbnail_url,
+            originalUrl: asset.data.image_original_url,
+            name: asset.data.name,
+            permalink: asset.data.permalink,
+            traits: asset.data.traits,
+          })
+        }).catch((err) => reject(err))
+      }, 300)
+    })
+  }
+  
+  function getContractABI(contractAddress) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        fetch(`https://api-rinkeby.etherscan.io/api?module=contract&action=getabi&address=${contractAddress}&apikey=${etherscanApiKey}`).then((res) => {
+          return res.json()
+        }).then(res=>{
+          console.log(res)
+          if (res.data.result === 'Contract source code not verified') {
+            reject(res.data.result)
+          } else resolve(res.data.result)
+        }).catch(err => reject(err))
+      }, 300)
+    })
+  }
+
+
+  async function fetchWalletAssets() {
+    const walletAddress = wallet.address;
+    const transactions = await getERC721Transactions(walletAddress);
+    console.log(transactions)
+    for (let i = 0; i < transactions.length; i++) {
+      const contractAddress = transactions[i].contractAddress
+console.log("gets here")
+      const supply = await readContracts.ButterflyClaims.totalSupply();
+      console.log(supply)
+      // const tokenId = await readContracts.ButterflyClaims.tokenOfOwnerByIndex(contractAddress,  parseInt(i) + 1);
+      // console.log("tokenId", tokenId);
+      // const tokenURI = await readContracts.ButterflyClaims.tokenURI(tokenId);
+      // console.log("tokenURI", tokenURI);
+
+      // const ipfsHash = tokenURI.replace("https://ipfs.io/ipfs/", "");
+      // console.log("ipfsHash", ipfsHash);
+
+      // const jsonManifestBuffer = await getFromIPFS(ipfsHash);
+      // this.statusContract = `(${i}/${transactions.length}) ${transactions[i].tokenName}`
+      // this.statusAction = 'Downloading contract ABI via Etherscan...'
+      // const contractAddress = transactions[i].contractAddress
+      // console.log("contract address",contractAddress)
+      // let abi = window.localStorage.getItem(contractAddress)
+      // if (abi === null) {
+      //   // try {
+      //   //   abi = await getContractABI(contractAddress)
+      //   //   console.log("gets here!")
+      //   //   window.localStorage.setItem(contractAddress, abi)
+      //   //   console.log('Set abi', contractAddress)
+      //   // } catch (err) {
+      //   //   console.error('Failed to load ABI for', transactions[i].tokenName, contractAddress)
+      //   //   continue
+      //   // }
+      //   try {
+      //     const images = await getTokenImages(contractAddress, transactions[i].tokenID)
+      //     console.log(images)
+      //     assets.push({
+      //       name: transactions[i].tokenName,
+      //       symbol: transactions[i].tokenSymbol,
+      //       tokenID: transactions[i].tokenID,
+      //       images: images
+      //     })
+      //   } catch (err) {
+      //     console.log('Failed to parse', transactions[i].tokenName, contractAddress)
+      //   }
+      // }
+    } 
+  }
+
+
+
+  // The Metamask plugin also allows signing transactions to
+  // send ether and pay to change state within the blockchain.
+  // For this, you need the account signer...
+  // const signer = provider.getSigner()
 
   // For more hooks, check out 🔗eth-hooks at: https://www.npmjs.com/package/eth-hooks
 
@@ -468,6 +584,8 @@ function App(props) {
                 >
                   Claim
                 </Button>
+                <Button
+                onClick={fetchWalletAssets} >Fetch Wallet Assets</Button>
               </div>
               <input type='file' id='single' onChange={onChange}/>
               <div style={{ padding: 32 }}>
@@ -535,11 +653,26 @@ function App(props) {
                           Transfer
                         </Button>
                         <Button onClick={() => {
-                          console.log("react: changing phase");
+                          console.log("react: changing phase");                    
                           console.log(phaseValue);
-                          tx(writeContracts.ButterflyClaims.setPhase(id, phaseValue[id-1]));
+                          if (!phaseValue) {
+                            return;
+                          }
+                          tx(writeContracts.ButterflyClaims.setPhase(id, phaseValue));
                           setForceLookup(forceLookup + 1);
                         }}>change phase</Button>
+                        <Button onClick={() => {
+                          console.log("click")
+                          console.log(counter)
+
+                          const newArray = counter.map((currCounter, idx) => {
+                            return (idx == id - 1) ? (counter[idx] == undefined ? 0 : counter[idx] + 1) : counter[idx] 
+                          })
+
+                          console.log(newArray)
+
+                          updateCounter(newArray)
+                        }}>ACTION</Button>
                       </div>
 
                     </List.Item>
