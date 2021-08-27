@@ -25,6 +25,13 @@ import {
 } from "./hooks";
 import { ethers } from "ethers";
 
+import photo1 from "./photos/phase0.png"
+import photo2 from "./photos/phase1.png"
+import photo3 from "./photos/phase3.png"
+import photo4 from "./photos/squarephoto.jpg"
+
+const {Meta} = Card
+
 const { BufferList } = require("bl");
 // https://www.npmjs.com/package/ipfs-http-client
 const ipfsAPI = require("ipfs-http-client");
@@ -260,6 +267,7 @@ console.log("gets here")
       // }
     } 
   }
+
 
 
 
@@ -544,6 +552,44 @@ console.log("gets here")
             */}
 
             <div style={{ width: 640, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+              <h2>
+                Here are possible NFT's you can grab!
+              </h2>
+              <Row>
+                <Col>
+              <Card
+                cover={<img alt="photo" src={photo1} />}>
+                  <Meta title="NFT that you can pick up" description="Minted by Eilleen, this is a photo of Ivan" />
+                  <Button style={{marginTop: "1.5rem"}} type={"primary"}>Claim this one</Button>
+              </Card>
+              </Col>
+              <Col>
+              <Card
+                cover={<img alt="photo" src={photo2} />}>
+                  <Meta title="NFT that you can pick up" description="Minted by Eilleen, this is a photo of Ivan" />
+                  <Button style={{marginTop: "1.5rem"}} type={"primary"}>Claim this one</Button>
+              </Card>
+              </Col>
+              </Row>
+
+
+              <Row>
+                <Col>
+              <Card
+                cover={<img alt="photo" src={photo3} />}>
+                  <Meta title="NFT that you can pick up" description="Minted by Eilleen, this is a photo of Ivan" />
+                  <Button style={{marginTop: "1.5rem"}} type={"primary"}>Claim this one</Button>
+              </Card>
+              </Col>
+              <Col>
+              <Card
+                cover={<img alt="photo" src={photo4} style={{ width: "300px"}} />}>
+                  <Meta title="NFT that you can pick up" description="Minted by Eilleen, this is a photo of Ivan" />
+                  <Button style={{marginTop: "1.5rem"}} type={"primary"}> Claim this one</Button>
+              </Card>
+              </Col>
+              </Row>
+
 
               <div style={{ padding: 32 }}>
                 <Button
