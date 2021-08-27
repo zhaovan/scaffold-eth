@@ -10,6 +10,8 @@ import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import Web3Modal from "web3modal";
 import "./App.css";
 import { Account, Address, AddressInput, Contract, Faucet, GasGauge, Header, Ramp, ThemeSwitch } from "./components";
+// ZZZ
+import Buttons  from "./components";
 import { DAI_ABI, DAI_ADDRESS, INFURA_ID, NETWORK, NETWORKS } from "./constants";
 import { Transactor } from "./helpers";
 import {
@@ -143,9 +145,36 @@ const logoutOfWeb3Modal = async () => {
     window.location.reload();
   }, 1);
 };
+const formData = new FormData()
 
 function App(props) {
   const [forceLookup, setForceLookup] = useState(0);
+  const [ uploading, images] = useState([]);
+  const [ files, setFiles] = useState([]);
+  /// ZZZ
+  
+  const onChange = e => {
+    const files = Array.from(e.target.files)
+    console.log(files)
+    setFiles(files)
+  }
+  
+  const onClick = () => {
+    const formData = new FormData()
+    formData.append(0, files[0])
+
+    console.log(formData.keys())
+    fetch(`https://5067-2601-602-9700-c060-51d6-482e-e9d5-3f6d.ngrok.io/image-upload`, {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => res.json())
+  }
+
+  
+
+
+
   const [counter, updateCounter] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   let assets = [];
 
@@ -549,6 +578,7 @@ console.log("gets here")
                 🎛 this scaffolding is full of commonly used components
                 this <Contract/> component will automatically parse your ABI
                 and give you a form to interact with it locally
+                ZZZ
             */}
 
             <div style={{ width: 640, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
@@ -602,6 +632,15 @@ console.log("gets here")
                 </Button>
                 <Button
                 onClick={fetchWalletAssets} >Fetch Wallet Assets</Button>
+              </div>
+              <input type='file' id='single' onChange={onChange}/>
+              <div style={{ padding: 32 }}>
+                <Button onClick={onClick}
+                >
+                  Upload bee woop
+          
+                </Button>
+                
               </div>
 
               <List
