@@ -4,7 +4,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import { Alert, Button, Card, Col, Input, List, Menu, Row } from "antd";
 import "antd/dist/antd.css";
 import { useUserAddress } from "eth-hooks";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactJson from "react-json-view";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import Web3Modal from "web3modal";
@@ -195,7 +195,7 @@ function App(props) {
 
 
 
-  const [counter, setCounter] = useState(0);
+  const counter = useRef(0);
   let assets = [];
 
   const mainnetProvider = scaffoldEthProvider && scaffoldEthProvider._network ? scaffoldEthProvider : mainnetInfura;
@@ -747,36 +747,53 @@ function App(props) {
                           tx(writeContracts.ButterflyClaims.setPhase(id, phaseValue[id - 1]));
                           setForceLookup(forceLookup + 1);
                         }}>change phase</Button>
+
+
+                        <Button onClick={() => {
+                          localStorage.setItem("iter",0)
+                        }}>Local storage reset</Button>
+
+
                         <Button onClick={() => {
                           console.log("click")
-                          console.log(counter)
+                          //console.log(counter)
+                          const iter = parseInt(localStorage.getItem("iter"))
+                          console.log(iter)
+                          if ( iter % 5 === 0){
+                            tx(writeContracts.ButterflyClaims.setPhase(id, parseInt(iter / 5)))
 
-                          // const newArray = counter.map((currCounter, idx) => {
-                          //   return (idx == id - 1) ? (counter[idx] == undefined ? 0 : counter[idx] + 1) : counter[idx] 
-                          // })
+                          }
+                          localStorage.setItem("iter", iter + 1)
+
+                          // // const newArray = counter.map((currCounter, idx) => {
+                          // //   return (idx == id - 1) ? (counter[idx] == undefined ? 0 : counter[idx] + 1) : counter[idx] 
+                          // // })
 
                           
 
-                          // if (newArray[id-1] == 5) {
-                          //   console.log(id)
-                          //   console.log(phaseValue)
-                          //   console.log(phaseValue[id-1] + 1)
-                          //   //const currentPhaseValue = 
-                          //   tx(writeContracts.ButterflyClaims.setPhase(id, phaseValue + 1))
-                          //   setForceLookup(forceLookup + 1)
-                          // }
-                          setCounter(counter+1)
-                            if (counter === 5) {
-                              setCounter(0)
-                              var phaseValue = localStorage.getItem("phase")
-                              if (!phaseValue) {
-                                phaseValue = 0;
-                              }
-                              const newPhase = phaseValue+1;
-                              //call transaction
-                              tx(writeContracts.ButterflyClaims.setPhase(id, newPhase))
-                              localStorage.setItem("phase", newPhase)
-                            }
+                          // // if (newArray[id-1] == 5) {
+                          // //   console.log(id)
+                          // //   console.log(phaseValue)
+                          // //   console.log(phaseValue[id-1] + 1)
+                          // //   //const currentPhaseValue = 
+                          // //   tx(writeContracts.ButterflyClaims.setPhase(id, phaseValue + 1))
+                          // //   setForceLookup(forceLookup + 1)
+                          // // }
+                          // .//tx(writeContracts.ButterflyClaims.setPhase(id, 2))
+                          // counter.current += 1
+                          // console.log(counter.current)
+                          //   if (counter.current === 5) {
+                          //     console.log(counter.current)
+                          //     console.log("nextphasetime")
+                          //     var phaseValue = localStorage.getItem("phase")
+                          //     if (!phaseValue) {
+                          //       phaseValue = 0;
+                          //     }
+                          //     const newPhase = phaseValue+1;
+                          //     //call transaction
+                          //     tx(writeContracts.ButterflyClaims.setPhase(id, newPhase))
+                          //     localStorage.setItem("phase", newPhase)
+                          //   }
 
                           // console.log(newArray)
                           // // random = Math.floor(Math.random() * funComments.length);
