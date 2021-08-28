@@ -195,7 +195,7 @@ function App(props) {
 
 
 
-  const [counter, updateCounter] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const [counter, setCounter] = useState(0);
   let assets = [];
 
   const mainnetProvider = scaffoldEthProvider && scaffoldEthProvider._network ? scaffoldEthProvider : mainnetInfura;
@@ -376,7 +376,8 @@ function App(props) {
   const yourBalance = balance && balance.toNumber && balance.toNumber();
   const [yourCollectibles, setYourCollectibles] = useState();
   console.log(yourCollectibles)
-  const [phaseValue, setPhaseValue] = useState([0, 0, 0, 0]);
+  const [phaseValue, setPhaseValue] = useState(0);
+
 
   useEffect(() => {
     const updateYourCollectibles = async () => {
@@ -750,24 +751,37 @@ function App(props) {
                           console.log("click")
                           console.log(counter)
 
-                          const newArray = counter.map((currCounter, idx) => {
-                            return (idx == id - 1) ? (counter[idx] == undefined ? 0 : counter[idx] + 1) : counter[idx] 
-                          })
+                          // const newArray = counter.map((currCounter, idx) => {
+                          //   return (idx == id - 1) ? (counter[idx] == undefined ? 0 : counter[idx] + 1) : counter[idx] 
+                          // })
 
                           
 
-                          if (newArray[id-1] == 5) {
-                            console.log(id)
-                            console.log(phaseValue)
-                            console.log(phaseValue[id-1] + 1)
-                            tx(writeContracts.ButterflyClaims.setPhase(id, phaseValue[id - 1] + 1))
-                            setForceLookup(forceLookup + 1)
-                          }
+                          // if (newArray[id-1] == 5) {
+                          //   console.log(id)
+                          //   console.log(phaseValue)
+                          //   console.log(phaseValue[id-1] + 1)
+                          //   //const currentPhaseValue = 
+                          //   tx(writeContracts.ButterflyClaims.setPhase(id, phaseValue + 1))
+                          //   setForceLookup(forceLookup + 1)
+                          // }
+                          setCounter(counter+1)
+                            if (counter === 5) {
+                              setCounter(0)
+                              var phaseValue = localStorage.getItem("phase")
+                              if (!phaseValue) {
+                                phaseValue = 0;
+                              }
+                              const newPhase = phaseValue+1;
+                              //call transaction
+                              tx(writeContracts.ButterflyClaims.setPhase(id, newPhase))
+                              localStorage.setItem("phase", newPhase)
+                            }
 
-                          console.log(newArray)
-                          // random = Math.floor(Math.random() * funComments.length);
+                          // console.log(newArray)
+                          // // random = Math.floor(Math.random() * funComments.length);
 
-                          updateCounter(newArray)
+                          // updateCounter(newArray)
                         }}>Click for a surprise!</Button>
                       </div>
                     </List.Item>
