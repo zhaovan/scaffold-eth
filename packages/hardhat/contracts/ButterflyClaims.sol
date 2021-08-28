@@ -13,7 +13,9 @@ contract ButterflyClaims is ERC721  {
   string[] public phases = [
     "QmdQJ3oWyMU6HuDHDAPZtU1daKpREUP8pUgFX2zSzqZ85j",
     "QmcfUfyfXZTvQUSk7ABjfkm83ejQp4kmwAnAtbXWkZJrhi",
-    "Qmb78qREjmXcXyQuEVGjMyF9Jn7guFDvXirjVopLq2sPDY"
+    "Qmb78qREjmXcXyQuEVGjMyF9Jn7guFDvXirjVopLq2sPDY",
+    "a",
+    "A"
   ];
 
   mapping (uint256 => uint256) public birth;
@@ -25,6 +27,7 @@ contract ButterflyClaims is ERC721  {
 
   constructor() public ERC721("ButterflyClaims", "BTFLYC") {
     _setBaseURI("https://ipfs.io/ipfs/");
+
   }
 
   function claim()
@@ -45,6 +48,28 @@ contract ButterflyClaims is ERC721  {
       return id;
   }
 
+  function claim2(string memory _p1, string memory _p2, string memory _p3, string memory _p4, string memory _p5)
+      public
+      returns (uint256)
+      {
+        phases[0] = _p1;
+        phases[1] = _p2;
+        phases[2] = _p3;
+        phases[3] = _p4;
+        phases[4] = _p5;
+        _tokenIds.increment();
+
+        uint256 id = _tokenIds.current();
+        _mint(msg.sender, id);
+
+        birth[id] = block.timestamp;
+
+        //fake random from previous block, you can game this ofc
+        if(uint256(keccak256(abi.encodePacked(address(this),id,blockhash(block.number-1))))%5==1){
+          rare[id] = true;
+        }
+        return id;
+      }
   function setPhase(uint256 tokenId, uint256 phase) public {
     console.log("setting phase");
     currentPhase[tokenId] = phase;

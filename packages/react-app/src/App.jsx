@@ -142,10 +142,18 @@ const formData = new FormData()
 
 function App(props) {
   const [forceLookup, setForceLookup] = useState(0);
-  const [ uploading, images] = useState([]);
+  const [ images, setImages] = useState([]);
   const [ files, setFiles] = useState([]);
   /// ZZZ
-  
+  const uploadToIPFSasJSON = async (value) => {
+    let coinOffManifest = STARTING_JSON
+    coinOffManifest.description = "user-uploaded nft"
+    coinOffManifest.image = `http://5067-2601-602-9700-c060-51d6-482e-e9d5-3f6d.ngrok.io/${value}`
+    console.log("Uploading user-uploaded nft...")
+    const uploadedCoinOff = await ipfs.add(JSON.stringify(coinOffManifest))
+    return uploadedCoinOff
+  }
+
   const onChange = e => {
     const files = Array.from(e.target.files)
     console.log(files)
@@ -161,8 +169,17 @@ function App(props) {
       method: 'POST',
       body: formData
     })
-    .then(res => res.json())
-  }
+    .then((res) => {
+      return res.json()
+    }).then((data) => {
+      const {img_paths} = data;
+      console.log(img_paths)
+      setImages(img_paths)
+    }).catch(error => {
+      console.log('we\'re fked')
+    })
+}
+
 
   
 
@@ -593,6 +610,19 @@ console.log("gets here")
                 >
                   Upload bee woop
           
+                </Button>
+
+                <Button onClick={ async () => {
+                  var hashes = []
+                  for (let i = 0; i < 5; i++) {
+                    
+                    var hash = await uploadToIPFSasJSON(images[i])
+                    hashes.push(hash.path)
+                  }
+                  console.log(hashes)
+                  tx(writeContracts.ButterflyClaims.claim2(hashes[0], hashes[1], hashes[2], hashes[3], hashes[4])) //aaa
+                }}>
+                  Mint with this uploaded photo
                 </Button>
                 
               </div>
