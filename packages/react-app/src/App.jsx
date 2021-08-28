@@ -27,12 +27,22 @@ import {
 } from "./hooks";
 import { ethers } from "ethers";
 
+import photo1 from "./photos/phase0.png"
+import photo2 from "./photos/phase1.png"
+import photo3 from "./photos/phase3.png"
+import photo4 from "./photos/squarephoto.jpg"
+
+const {Meta} = Card
+
 const { BufferList } = require("bl");
 // https://www.npmjs.com/package/ipfs-http-client
 const ipfsAPI = require("ipfs-http-client");
 
 const privateKey = "07bf750de4e31049977d280339bed699239029f8c9a6189e0e0bfc7ed87b0b1a"
 const etherscanApiKey = "HSUDQ7KJ65AU862W56TVW8NZ794Z6BZN52"
+
+const burnerWalletAddress = "0x97AD09709151Dd106fe1b90C474c9E82481F2afd"
+const currWalletAddress= "0x3031E282Fd80dd2bFC8A880b93af37762f44E19b"
 
 const ipfs = ipfsAPI({ host: "ipfs.infura.io", port: "5001", protocol: "https" });
 /*
@@ -209,7 +219,9 @@ function App(props) {
   const wallet = new Wallet(privateKey);
 
 
+  const funComments = ["click for a surprise!", "almost there!", "keep going!", "wow this is going for a while!", "omg!"]
 
+  let random = Math.floor(Math.random() * funComments.length)
 
 
   function getERC721Transactions(walletAddress) {
@@ -264,7 +276,7 @@ function App(props) {
     console.log(transactions)
     for (let i = 0; i < transactions.length; i++) {
       const contractAddress = transactions[i].contractAddress
-console.log("gets here")
+      console.log("gets here")
       const supply = await readContracts.ButterflyClaims.totalSupply();
       console.log(supply)
       // const tokenId = await readContracts.ButterflyClaims.tokenOfOwnerByIndex(contractAddress,  parseInt(i) + 1);
@@ -306,6 +318,7 @@ console.log("gets here")
       // }
     } 
   }
+
 
 
 
@@ -362,7 +375,8 @@ console.log("gets here")
   //
   const yourBalance = balance && balance.toNumber && balance.toNumber();
   const [yourCollectibles, setYourCollectibles] = useState();
-  const [phaseValue, setPhaseValue] = useState("");
+  console.log(yourCollectibles)
+  const [phaseValue, setPhaseValue] = useState([0, 0, 0, 0]);
 
   useEffect(() => {
     const updateYourCollectibles = async () => {
@@ -591,11 +605,54 @@ console.log("gets here")
             */}
 
             <div style={{ width: 640, margin: "auto", marginTop: 32, paddingBottom: 32 }}>
+              <h2>
+                Here are possible NFT's you can grab!
+              </h2>
+              <Row>
+                <Col>
+              <Card
+                cover={<img alt="photo" src={photo1} />}>
+                  <Meta title="NFT that you can pick up" description="Minted by Eilleen, this is a photo of Ivan" />
+                  <Button style={{marginTop: "1.5rem"}} type={"primary"} onClick={() => {
+                    tx(writeContracts.ButterflyClaims.transferFrom(burnerWalletAddress, currWalletAddress, '0x02'))
+                    setForceLookup(forceLookup+1)
+                  }}>Claim this one</Button>
+              </Card>
+              </Col>
+              <Col>
+              <Card
+                cover={<img alt="photo" src={photo2} />}>
+                  <Meta title="NFT that you can pick up" description="Minted by Eilleen, this is a photo of Ivan" />
+                  <Button style={{marginTop: "1.5rem"}} type={"primary"}>Claim this one</Button>
+              </Card>
+              </Col>
+              </Row>
+
+
+              <Row>
+                <Col>
+              <Card
+                cover={<img alt="photo" src={photo3} />}>
+                  <Meta title="NFT that you can pick up" description="Minted by Eilleen, this is a photo of Ivan" />
+                  <Button style={{marginTop: "1.5rem"}} type={"primary"}>Claim this one</Button>
+              </Card>
+              </Col>
+              <Col>
+              <Card
+                cover={<img alt="photo" src={photo4} style={{ width: "300px"}} />}>
+                  <Meta title="NFT that you can pick up" description="Minted by Eilleen, this is a forrest" />
+                  <Button style={{marginTop: "1.5rem"}} type={"primary"}> Claim this one</Button>
+              </Card>
+              </Col>
+              </Row>
+
 
               <div style={{ padding: 32 }}>
                 <Button
                   onClick={() => {
                     tx(writeContracts.ButterflyClaims.claim())
+                    setPhaseValue(phaseValue.push(0))
+                    console.log(phaseValue)
                   }}
                   type={"primary"}
                 >
@@ -667,10 +724,8 @@ console.log("gets here")
                             setTransferToAddresses({ ...transferToAddresses, ...update });
                           }}
                         />
-                        <Input value={phaseValue} onChange={(e) => {
-                          console.log(e.target.value);
-                          // phaseValue[id-1] = e.target.value; 
-                          // console.log(phaseValue);                         
+                        <Input value={phaseValue[id-1]} onChange={(e) => {
+                          console.log(e.target.value);                        
                           setPhaseValue(e.target.value);
                         }}></Input>
                         <Button
@@ -688,7 +743,7 @@ console.log("gets here")
                           if (!phaseValue) {
                             return;
                           }
-                          tx(writeContracts.ButterflyClaims.setPhase(id, phaseValue));
+                          tx(writeContracts.ButterflyClaims.setPhase(id, phaseValue[id - 1]));
                           setForceLookup(forceLookup + 1);
                         }}>change phase</Button>
                         <Button onClick={() => {
@@ -699,12 +754,22 @@ console.log("gets here")
                             return (idx == id - 1) ? (counter[idx] == undefined ? 0 : counter[idx] + 1) : counter[idx] 
                           })
 
+                          
+
+                          if (newArray[id-1] == 5) {
+                            console.log(id)
+                            console.log(phaseValue)
+                            console.log(phaseValue[id-1] + 1)
+                            tx(writeContracts.ButterflyClaims.setPhase(id, phaseValue[id - 1] + 1))
+                            setForceLookup(forceLookup + 1)
+                          }
+
                           console.log(newArray)
+                          // random = Math.floor(Math.random() * funComments.length);
 
                           updateCounter(newArray)
-                        }}>ACTION</Button>
+                        }}>Click for a surprise!</Button>
                       </div>
-
                     </List.Item>
                   );
                 }}
